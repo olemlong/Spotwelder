@@ -11,8 +11,8 @@
 SSD1306Brzo display(0x3c, D3, D5);
 #define VERSION "1.0"
 
-const char* ssid = "BatSignal";
-const char* password = "ironmann";
+const char* ssid = "YOUR WIFI SSID HERE!";
+const char* password = "THE WIFI PASSWORD";
 
 #define potPin 0   // analog pin used to connect the potentiometer
 int potVal;       // variable to read the value from the analog pin
@@ -50,7 +50,6 @@ void setup(void)
 
 }
 
-
 void loop(void) {
    ArduinoOTA.handle();
   sensors.requestTemperatures(); // Send the command to get temperatures
@@ -68,21 +67,7 @@ void loop(void) {
 
   display.drawString(42, 47, String(temperature) += "C");
   display.display();
-  /*
-      //make int ready for display int -> String -> char array.
-      char CharArray[10];
-      String space = " ";
-      String potValString = String(potVal);
-      potValString += "ms ";
-      space += potValString;
-      space.toCharArray(CharArray, 10);
-      u8x8.setFont(u8x8_font_amstrad_cpc_extended_f);
-      u8x8.draw2x2String(1, 1, CharArray);
-      String(temperature).toCharArray(CharArray,10);
-      u8x8.draw2x2String(3, 5, CharArray);
-
-      u8x8.refreshDisplay();
-*/
+ 
       triggerSwitch = digitalRead(inPin);
 
       //when weld button is pressed
@@ -95,15 +80,10 @@ void loop(void) {
         digitalWrite(ssrPin, HIGH);
         delay(potVal);
         digitalWrite(ssrPin, LOW);
-        delay(1000);
-        
-        
+        delay(1000);        
       }
-  
-
   display.clear();
 }
-
 void displayIntro() {
   display.setFont(ArialMT_Plain_10);
   display.drawString(60, 21, VERSION);
@@ -119,8 +99,7 @@ void displayIntro() {
 
 }
 
-void OtaSetup() {
-  
+void OtaSetup() {  
   Serial.println("Booting Wifi system...");
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -130,18 +109,7 @@ void OtaSetup() {
     ESP.restart();
   }
 
-  // Port defaults to 8266
-  // ArduinoOTA.setPort(8266);
-
-  // Hostname defaults to esp8266-[ChipID]
    ArduinoOTA.setHostname("SpotWelder");
-
-  // No authentication by default
-  // ArduinoOTA.setPassword("admin");
-
-  // Password can be set with it's md5 value as well
-  // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
-  // ArduinoOTA.setPasswordHash("21232f297a57a5a743894a0e4a801fc3");
 
   ArduinoOTA.onStart([]() {
     String type;
